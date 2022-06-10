@@ -1,0 +1,80 @@
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  # external_labels:
+  #  monitor: 'codelab-monitor'
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'node-exporter'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.2.1.1:9100']
+
+  - job_name: 'cadvisor'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  - job_name: 'wgexporter'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.2.2.1:9586']
+
+  - job_name: 'wgexporter-gate'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.2.1.101:9586']
+
+  - job_name: 'pihole-exporter'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.2.2.1:9617']
+
+
+  - job_name: 'node-exporter-gate'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.2.1.101:9100']
+
+  - job_name: 'cardvisor-gate'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['10.2.1.101:5647']
+
+  - job_name: 'cardvisor-cloud'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['10.2.1.102:5647']
+
+
+  - job_name: 'pihole-exporter-gate'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.2.1.101:9617']
+
+  
+  - job_name: 'prometheus-gate'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.2.1.101:9090']
+
+  - job_name: 'node-exporter-cloud'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.2.1.102:9100']
+
+  - job_name: 'minecraft-exporter'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.2.2.1:8000']
