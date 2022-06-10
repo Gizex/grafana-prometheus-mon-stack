@@ -106,6 +106,7 @@ services:
     image: 'ekofr/pihole-exporter:latest'
 
   minecraft_exporter:
+    container_name: namecraft_exporter
     image: joshi425/minecraft_exporter:latest
     restart: always
     environment:
