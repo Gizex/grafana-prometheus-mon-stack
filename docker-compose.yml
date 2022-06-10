@@ -66,6 +66,8 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+    command:
+      - '--housekeeping_interval=55s'
     networks:
      default:
     restart: always
