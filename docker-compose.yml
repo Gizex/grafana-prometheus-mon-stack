@@ -9,13 +9,13 @@ services:
     volumes:
       - ./grafana/data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
-    env_file:
-      - ./grafana/config.monitoring
     environment:
-      GF_RENDERING_SERVER_URL: http://10.2.2.201:8081/render
+      GF_RENDERING_SERVER_URL: http://10.2.2.23:8081/render
       GF_RENDERING_CALLBACK_URL: http://10.2.2.20:3000/
       GF_LOG_FILTERS: rendering:debug
       GF_SERVER_ROOT_URL: http://10.2.2.20:3000/
+      GF_SECURITY_ADMIN_PASSWORD: foobar
+      GF_USERS_ALLOW_SIGN_UP: false
     networks:
      default:
       ipv4_address: 10.2.2.20
@@ -25,9 +25,13 @@ services:
   # grafana-cli plugins install grafana-image-renderer
     image: grafana/grafana-image-renderer:latest
     container_name: grafana_img_render
+    ports:
+      - 8081
     networks:
      default:
+      ipv4_address: 10.2.2.23
     restart: always
+    
   prometheus:
     user: "1000:1000"
     image: prom/prometheus
@@ -52,6 +56,14 @@ services:
   jaeger:
     image: jaegertracing/all-in-one
     container_name: jaeger
+    ports:
+      - "10.2.2.1:5775:5775"
+      - "10.2.2.1:5778:5778"
+      - "10.2.2.1:14250:14250"
+      - "10.2.2.1:14268:14268"
+      - "10.2.2.1:6831:6831"
+      - "10.2.2.1:6832:6832"
+      - "10.2.2.1:16686:16686"
     environment:
       - COLLECTOR_ZIPKIN_HTTP_PORT=9411
     networks:
@@ -79,12 +91,14 @@ services:
      ports:
       - "10.2.2.1:9586:9586"
      volumes:
-      - /opt/monitoring:/etc/wireguard:ro
+      - /opt/2.monitoring:/etc/wireguard:ro
      environment:
       - PROMETHEUS_WIREGUARD_EXPORTER_EXPORT_REMOTE_IP_AND_PORT_ENABLED=true
       - PROMETHEUS_WIREGUARD_EXPORTER_PREPEND_SUDO_ENABLED=true
       - PROMETHEUS_WIREGUARD_EXPORTER_VERBOSE_ENABLED=true
       - PROMETHEUS_WIREGUARD_EXPORTER_CONFIG_FILE_NAMES=/etc/wireguard/wgexporter.conf #путь к списку имен пиров 
+     command:
+      - '--prepend_sudo=true'
      cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -105,22 +119,22 @@ services:
        - '10.2.2.1:9617:9617'
     image: 'ekofr/pihole-exporter:latest'
 
-  minecraft_exporter:
-    container_name: namecraft_exporter
-    image: joshi425/minecraft_exporter:latest
-    restart: always
-    environment:
-      - RCON_HOST=127.0.0.1
-      - RCON_PORT=25576
-      - RCON_PASSWORD=dhBZCGMBWJCvwX55UdVK
-      - FORGE_SERVER=True
-      - PAPER_SERVER=False
-      - DYNMAP_ENABLED=True
-    network_mode: "host"
-    ports:
-      - '10.2.2.1:8111:8000'
-    volumes:
-      - '/opt/mc/server_boyzhard/world:/world'
+  # minecraft_exporter:
+  #   container_name: namecraft_exporter
+  #   image: joshi425/minecraft_exporter:latest
+  #   restart: always
+  #   environment:
+  #     - RCON_HOST=127.0.0.1
+  #     - RCON_PORT=25576
+  #     - RCON_PASSWORD=dhBZCGMBWJCvwX55UdVK
+  #     - FORGE_SERVER=True
+  #     - PAPER_SERVER=False
+  #     - DYNMAP_ENABLED=True
+  #   network_mode: "host"
+  #   ports:
+  #     - '10.2.2.1:8111:8000'
+  #   volumes:
+  #     - '/opt/mc/server_boyzhard/world:/world'
       
 networks:
   default:

@@ -41,7 +41,6 @@ scrape_configs:
     static_configs:
       - targets: ['10.2.2.1:9617']
 
-
   - job_name: 'node-exporter-gate'
     scrape_interval: 15s
     static_configs:
