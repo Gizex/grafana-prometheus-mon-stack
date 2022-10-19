@@ -16,62 +16,61 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'node-exporter'
+  - job_name: 'con-gzx.node-exporter'
     scrape_interval: 15s
     static_configs:
       - targets: ['10.2.1.1:9100']
 
-  - job_name: 'cadvisor'
+  - job_name: 'con-gzx.nginx-exporter'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.2.2.8:9913']
+
+  - job_name: 'con-gzx.nginx-vts-exporter'
+    scrape_interval: 15s
+    metrics_path: /status/format/prometheus
+    static_configs:
+      - targets: ['10.2.2.8:11050']
+
+  - job_name: 'con-gzx.cadvisor'
     scrape_interval: 30s
     static_configs:
       - targets: ['cadvisor:8080']
 
-  - job_name: 'wgexporter'
+  - job_name: 'con-gzx.wgexporter'
     scrape_interval: 15s
     static_configs:
       - targets: ['10.2.2.1:9586']
 
-  - job_name: 'wgexporter-gate'
-    scrape_interval: 15s
+  - job_name: 'or-br1-gzx.node-exporter'
+    scrape_interval: 1m
     static_configs:
-      - targets: ['10.2.1.101:9586']
+      - targets: ['10.2.1.23:9100']
 
+  - job_name: 'or-br2-gzx.node-exporter'
+    scrape_interval: 1m
+    scrape_timeout: 30s
+    static_configs:
+      - targets: ['10.2.1.24:9100']
+
+
+
+
+
+
+
+
+
+
+  - job_name: 'node-exporter-or-de3-arm-gzx'
+    scrape_interval: 1m
+    static_configs:
+      - targets: ['10.2.1.22:9100']
+      
   - job_name: 'pihole-exporter'
     scrape_interval: 15s
     static_configs:
       - targets: ['10.2.2.1:9617']
-
-  - job_name: 'node-exporter-gate'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['10.2.1.101:9100']
-
-  - job_name: 'cardvisor-gate'
-    scrape_interval: 30s
-    static_configs:
-      - targets: ['10.2.1.101:5647']
-
-  - job_name: 'cardvisor-cloud'
-    scrape_interval: 30s
-    static_configs:
-      - targets: ['10.2.1.102:5647']
-
-
-  - job_name: 'pihole-exporter-gate'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['10.2.1.101:9617']
-
-  
-  - job_name: 'prometheus-gate'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['10.2.1.101:9090']
-
-  - job_name: 'node-exporter-cloud'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['10.2.1.102:9100']
 
   - job_name: 'minecraft-exporter'
     scrape_interval: 15s
